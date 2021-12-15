@@ -640,7 +640,7 @@ export default function Form() {
             className="focus:outline-none focus:ring-2 focus:ring-sky-500 bg-gray-200 focus:bg-gray-100 rounded-md px-2 py-1"
           />
           <p className="text-sm mt-1">
-            Your balance: <span className="pl-2 font-bold">{usdtBalance}</span>{" "}
+            Your balance: <span className="pl-2 font-bold">{usdtBalance.toFixed(3)}</span>{" "}
             USDT
           </p>
           <button
@@ -689,7 +689,7 @@ export default function Form() {
             className="focus:outline-none focus:ring-2 focus:ring-sky-500 bg-gray-200 focus:bg-gray-100 rounded-md px-2 py-1"
           />
           <p className="text-sm mt-1">
-            Available: <span className="pl-2 font-bold">{taskBalance}</span>{" "}
+            Available: <span className="pl-2 font-bold">{taskBalance.toFixed(3)}</span>{" "}
             USDT
           </p>
           <button
