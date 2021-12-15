@@ -3,7 +3,6 @@ import { ethers } from "ethers";
 import { useEffect, useState } from "react";
 import { shortAddress } from "../lib/shortAddres";
 import * as moment from 'moment'
-import { format } from "path/posix";
 
 export default function Transactions() {
     

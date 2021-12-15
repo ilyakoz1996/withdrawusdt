@@ -1,5 +1,4 @@
 import { useWeb3React } from "@web3-react/core";
-import { ethers } from "ethers";
 import { useEffect, useState } from "react";
 import { shortAddress } from "../lib/shortAddres";
 
