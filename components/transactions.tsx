@@ -137,11 +137,12 @@ export default function Transactions() {
     let history = await taskContract.queryFilter({'address': taskAddress}, 0, currentBlock )
     const historyLastTen = history.slice(Math.max(history.length - 10, 1))
     for (const item of historyLastTen) {
+      console.log(item)
       const date = await library.getBlock(item.blockNumber)
       const time = moment.unix(date.timestamp).format("MM/DD/YYYY HH:mm:ss")
       const event = item.event
       const amount = ethers.utils.formatUnits(item.args.amount)
-      const from = item.args.from
+      const from = item.args.from ? item.args.from : item.address
 
       transactionsArr.push({
         from: from,
