@@ -540,7 +540,7 @@ export default function Form() {
 
   const [provideInput, setProvideInput] = useState<number>();
   const [provideLoading, setProvideLoading] = useState(false);
-  
+
   const [withdrawInput, setWithdrawInput] = useState<number>();
   const [withdrawLoading, setWithdrawLoading] = useState(false);
 
@@ -562,8 +562,8 @@ export default function Form() {
       return alert("Not enought balance of USDT");
     if (!provideInput) return alert("Set USDT value to provide");
 
-    const parseToString = ethers.utils.parseEther((provideInput).toString());
-    const math = provideInput * (10 ** 18)
+    const parseToString = ethers.utils.parseEther(provideInput.toString());
+    const math = provideInput * 10 ** 18;
 
     const allowed = await checkAllowance();
 
@@ -571,18 +571,18 @@ export default function Form() {
       const approveProvide = await taskContract.provide(math.toString());
       return console.log("Отправили", approveProvide);
     } else {
-      const addAllowedValue = (allowed + (provideInput - allowed)) * (10 ** 18);
+      const addAllowedValue = (allowed + (provideInput - allowed)) * 10 ** 18;
       console.log("Увеличиваем лимит", addAllowedValue);
       const approveUsdt = await usdtContract.approve(
         taskAddress,
         addAllowedValue.toString()
-        );
-        console.log("approveUsdt лимит", approveUsdt);
-        setProvideLoading(true);
+      );
+      console.log("approveUsdt лимит", approveUsdt);
+      setProvideLoading(true);
       const done = await library.waitForTransaction(approveUsdt.hash);
       if (done) {
-        console.log('dal')
-        console.log(done)
+        console.log("dal");
+        console.log(done);
         const approveProvide = await taskContract.provide(math.toString());
         const sent = await library.waitForTransaction(approveProvide.hash);
         if (sent) {
@@ -605,14 +605,13 @@ export default function Form() {
 
     const value = ethers.utils.parseEther(withdrawInput.toString());
 
-    const withdrawRequest = await taskContract.withdraw(value)
-    const done = await library.waitForTransaction(withdrawRequest.hash)
+    const withdrawRequest = await taskContract.withdraw(value);
+    const done = await library.waitForTransaction(withdrawRequest.hash);
     if (done) {
       getUsdtBalance();
       getTaskBalance();
       setWithdrawLoading(false);
     }
-    
   };
 
   const getTaskBalance = async () => {
@@ -623,7 +622,7 @@ export default function Form() {
 
   const checkAllowance = async () => {
     const allow = await usdtContract.allowance(account, taskAddress);
-    console.log(allow)
+    console.log(allow);
     return allow.toString() / 10 ** 18;
   };
 
@@ -640,7 +639,8 @@ export default function Form() {
             className="focus:outline-none focus:ring-2 focus:ring-sky-500 bg-gray-200 focus:bg-gray-100 rounded-md px-2 py-1"
           />
           <p className="text-sm mt-1">
-            Your balance: <span className="pl-2 font-bold">{usdtBalance.toFixed(3)}</span>{" "}
+            Your balance:{" "}
+            <span className="pl-2 font-bold">{usdtBalance.toFixed(3)}</span>{" "}
             USDT
           </p>
           <button
@@ -689,7 +689,8 @@ export default function Form() {
             className="focus:outline-none focus:ring-2 focus:ring-sky-500 bg-gray-200 focus:bg-gray-100 rounded-md px-2 py-1"
           />
           <p className="text-sm mt-1">
-            Available: <span className="pl-2 font-bold">{taskBalance.toFixed(3)}</span>{" "}
+            Available:{" "}
+            <span className="pl-2 font-bold">{taskBalance.toFixed(3)}</span>{" "}
             USDT
           </p>
           <button

@@ -5,16 +5,15 @@ import Form from "../components/form";
 import Transactions from "../components/transactions";
 
 export default function Home() {
-  const { active } =
-    useWeb3React();
+  const { active } = useWeb3React();
 
   return (
     <div className="w-full flex justify-center h-screen">
       {active == true ? (
         <div className="flex flex-col space-y-8">
-        <Header />
-        <Form />
-        <Transactions />
+          <Header />
+          <Form />
+          <Transactions />
         </div>
       ) : (
         <Login />
