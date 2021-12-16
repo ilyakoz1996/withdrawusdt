@@ -558,17 +558,18 @@ export default function Form() {
 
   const provideUsdt = async (e) => {
     e.preventDefault();
+
     if (usdtBalance < provideInput && usdtBalance !== 0)
       return alert("Not enought balance of USDT");
+
     if (!provideInput) return alert("Set USDT value to provide");
 
-    const parseToString = ethers.utils.parseEther(provideInput.toString());
-    const math = provideInput * 10 ** 18;
+    const correctUsdt = provideInput * 10 ** 18;
 
     const allowed = await checkAllowance();
 
     if (allowed >= provideInput) {
-      const approveProvide = await taskContract.provide(math.toString());
+      const approveProvide = await taskContract.provide(correctUsdt.toString());
       return console.log("Отправили", approveProvide);
     } else {
       const addAllowedValue = (allowed + (provideInput - allowed)) * 10 ** 18;
@@ -581,9 +582,9 @@ export default function Form() {
       setProvideLoading(true);
       const done = await library.waitForTransaction(approveUsdt.hash);
       if (done) {
-        console.log("dal");
-        console.log(done);
-        const approveProvide = await taskContract.provide(math.toString());
+        const approveProvide = await taskContract.provide(
+          correctUsdt.toString()
+        );
         const sent = await library.waitForTransaction(approveProvide.hash);
         if (sent) {
           getUsdtBalance();
