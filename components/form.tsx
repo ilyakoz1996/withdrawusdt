@@ -633,6 +633,8 @@ export default function Form() {
         <form onSubmit={provideUsdt}>
           <input
             type="number"
+            step="0.000000000000000001"
+            min="0"
             value={provideInput}
             onChange={(e) => setProvideInput(parseFloat(e.target.value))}
             placeholder="Ammount"
@@ -683,6 +685,8 @@ export default function Form() {
         <form onSubmit={withdrawUsdt}>
           <input
             type="number"
+            step="0.000000000000000001"
+            min="0"
             value={withdrawInput}
             onChange={(e) => setWithdrawInput(parseFloat(e.target.value))}
             placeholder="Ammount"

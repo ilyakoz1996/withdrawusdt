@@ -6,7 +6,10 @@ export default function Login() {
 
   async function connect() {
     try {
+      console.log('нажал')
       await activate(injected);
+      console.log(injected)
+      
     } catch (err) {
       console.log("Error: ", err);
     }
