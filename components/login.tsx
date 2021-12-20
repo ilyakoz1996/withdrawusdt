@@ -1,7 +1,9 @@
 import { useWeb3React } from "@web3-react/core";
 import { injected } from "../lib/connector";
+import Button from "./ui/button";
 
 export default function Login() {
+
   const { activate } = useWeb3React();
 
   async function connect() {
@@ -14,12 +16,9 @@ export default function Login() {
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <button
-        onClick={connect}
-        className="py-1 px-2 text-lg font-bold text-white rounded-lg bg-blue-500 hover:bg-blue-600"
-      >
-        Connect to MetaMask
-      </button>
+      <Button 
+      title="Connect with Metamask"
+      onClick={connect} />
     </div>
   );
 }

@@ -3,126 +3,18 @@ import { ethers } from "ethers";
 import { useEffect, useState } from "react";
 import { shortAddress } from "../lib/shortAddres";
 import * as moment from "moment";
+import Button from "./ui/button";
+import { TaskAbi__factory } from "../types/ethers-contracts";
 
 export default function Transactions() {
-  const { active, account, library, connector, activate, deactivate } =
-    useWeb3React();
+  const { account, library } = useWeb3React();
 
   const [transactions, setTransactions] = useState([]);
-  const taskAddress = "0x02cB34d293e74D3328321c0E32898e42D8594895";
-  const taskAbi = [
-    {
-      inputs: [
-        {
-          internalType: "address",
-          name: "_tokenAddress",
-          type: "address",
-        },
-      ],
-      stateMutability: "nonpayable",
-      type: "constructor",
-    },
-    {
-      anonymous: false,
-      inputs: [
-        {
-          indexed: false,
-          internalType: "address",
-          name: "from",
-          type: "address",
-        },
-        {
-          indexed: false,
-          internalType: "uint256",
-          name: "amount",
-          type: "uint256",
-        },
-      ],
-      name: "Provide",
-      type: "event",
-    },
-    {
-      anonymous: false,
-      inputs: [
-        {
-          indexed: false,
-          internalType: "address",
-          name: "to",
-          type: "address",
-        },
-        {
-          indexed: false,
-          internalType: "uint256",
-          name: "amount",
-          type: "uint256",
-        },
-      ],
-      name: "Withdraw",
-      type: "event",
-    },
-    {
-      inputs: [
-        {
-          internalType: "address",
-          name: "",
-          type: "address",
-        },
-      ],
-      name: "balance",
-      outputs: [
-        {
-          internalType: "uint256",
-          name: "",
-          type: "uint256",
-        },
-      ],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [
-        {
-          internalType: "uint256",
-          name: "amount",
-          type: "uint256",
-        },
-      ],
-      name: "provide",
-      outputs: [],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "tokenAddress",
-      outputs: [
-        {
-          internalType: "address",
-          name: "",
-          type: "address",
-        },
-      ],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [
-        {
-          internalType: "uint256",
-          name: "amount",
-          type: "uint256",
-        },
-      ],
-      name: "withdraw",
-      outputs: [],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-  ];
-  let signer = library.getSigner(account);
-  const taskContract = new ethers.Contract(taskAddress, taskAbi, signer);
-
   const [dataLoading, setDataLoading] = useState(false);
+
+  const taskAddress = "0x02cB34d293e74D3328321c0E32898e42D8594895";
+  let signer = library.getSigner(account);
+  const taskContract = TaskAbi__factory.connect(taskAddress, signer);
 
   const getLastData = async () => {
     setDataLoading(true);
@@ -138,7 +30,6 @@ export default function Transactions() {
     );
     const historyLastTen = history.slice(Math.max(history.length - 10, 1));
     for (const item of historyLastTen) {
-      console.log(item);
       const date = await library.getBlock(item.blockNumber);
       const time = moment.unix(date.timestamp).format("MM/DD/YYYY HH:mm:ss");
       const event = item.event;
@@ -169,43 +60,14 @@ export default function Transactions() {
 
   return (
     <div className="flex flex-col">
-      <div className="flex justify-between mb-4">
+      <div className="flex justify-between mb-4 items-center">
         <h3 className="font-bold text-xl">Transactions history:</h3>
-        <button
-          disabled={dataLoading}
+        <Button
+          title="Refresh data"
+          style="outline"
+          loading={dataLoading}
           onClick={getLastData}
-          className={`py-1 px-2 font-bold hover:text-white rounded-md border hover:bg-blue-500 ${
-            dataLoading && "bg-blue-400 text-white"
-          }`}
-        >
-          {dataLoading ? (
-            <div className="flex space-x-2 items-center">
-              <svg
-                className="animate-spin -ml-1 h-5 w-5 text-white"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                ></circle>
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                ></path>
-              </svg>
-              <p>Updating</p>
-            </div>
-          ) : (
-            <p>Refresh data</p>
-          )}
-        </button>
+        />
       </div>
       <table className="table-auto">
         <thead className="bg-gray-300 ">

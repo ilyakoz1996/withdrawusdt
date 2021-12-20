@@ -1,10 +1,9 @@
 import { useWeb3React } from "@web3-react/core";
-import { useEffect, useState } from "react";
 import { shortAddress } from "../lib/shortAddres";
+import Button from "./ui/button";
 
 export default function Header() {
-  const { active, account, library, connector, activate, deactivate } =
-    useWeb3React();
+  const { account, deactivate } = useWeb3React();
 
   async function disconnect() {
     try {
@@ -18,18 +17,12 @@ export default function Header() {
     <div className="flex justify-between items-center mt-8">
       <div className="flex space-x-2 items-end font-bold bg-lightBlueBg rounded-3xl">
         <h3 className="text-xl font-bold">Wallet</h3>
-
         <div className="hidden lg:block">{}</div>
         <div title={account} className="bg-lightGrayBg rounded-xl px-2">
           {shortAddress(account)}
         </div>
       </div>
-      <button
-        onClick={disconnect}
-        className="py-1 px-2 font-bold hover:text-white rounded-md border hover:bg-red-500"
-      >
-        Disconnect
-      </button>
+      <Button title="Disconnect" onClick={disconnect} style="outline" />
     </div>
   );
 }
