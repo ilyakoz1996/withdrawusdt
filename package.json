@@ -4,9 +4,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "generate-types": "typechain --target=ethers-v5 'contracts/*.json'",
-    "postinstall": "yarn generate-types"
+    "start": "next start"
   },
   "dependencies": {
     "@web3-react/core": "^6.1.9",
